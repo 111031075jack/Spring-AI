@@ -1,5 +1,7 @@
 package com.example.demo.config;
 
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaChatOptions;
@@ -13,14 +15,14 @@ public class AiConfig {
 	private String defaultModel = "qwen3:0.6b";
 	
 	@Bean
-	public OllamaApi ollamaApi() {
+	 OllamaApi ollamaApi() {
 		return OllamaApi.builder()
 				.baseUrl(ollamaApiUrl)
 				.build();
 	}
 	
 	@Bean
-	public OllamaChatModel chatModel(OllamaApi ollamaApi) {
+	 OllamaChatModel chatModel(OllamaApi ollamaApi) {
 		return OllamaChatModel.builder()
 				.ollamaApi(ollamaApi)
 				.defaultOptions(
@@ -30,6 +32,17 @@ public class AiConfig {
 				)
 				.build();
 	}
+	
+
+	@Bean
+	 ChatMemory chatMemory() {
+		return MessageWindowChatMemory.builder()
+				.maxMessages(100) // 保留最近100則
+				.build();
+	}
+	
+
+	
 	
 	
 }
