@@ -27,11 +27,8 @@ public class OllamaController {
 	// http://localhost:8080/ollama/ask?q=台灣在哪裡
 	@GetMapping("/ask")
 	public String ask(@RequestParam String q, @RequestParam(required = false) String model) {
-		try {
-			return ollamaService.ask(q, model);
-		}catch (Exception e) {
-			return ollamaService.ask(q); // 使用預設模型
-		}
+		return ollamaService.ask(q, model);
+		
 		
 	}
 	
@@ -41,10 +38,9 @@ public class OllamaController {
 	// 利用 Flux 將 Chunk 一個一個印出來
 	// http://localhost:8080/ollama/stream?q=台灣在哪裡
 	@GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<String> stream(@RequestParam String q){
-		return chatModel.stream(new Prompt(q))
-				.map(chunk -> chunk.getResult().getOutput().getText());
+	public Flux<String> stream(@RequestParam String q, @RequestParam(required = false) String model) {
+			return ollamaService.stream(q, model);
+		
+	
 	}
-	
-	
 }
