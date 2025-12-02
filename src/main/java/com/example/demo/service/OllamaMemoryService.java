@@ -69,6 +69,7 @@ public class OllamaMemoryService {
 		// 3. 呼叫模型
 		StringBuilder fullAnswer = new StringBuilder();
 		
+		// 4. 將 AI 回應透過 AssistantMessage 存入 memory
 		return chatModel.stream(prompt)
 				.map(chunk -> {
 					String text = chunk.getResult().getOutput().getText();
